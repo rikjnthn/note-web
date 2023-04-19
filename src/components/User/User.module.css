@@ -1,0 +1,13 @@
+.user {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 0 0 2rem 2.3125rem;
+  margin-bottom: 2rem;
+  gap: 1rem;
+}
+
+.user span {
+  font-weight: bold;
+}
+

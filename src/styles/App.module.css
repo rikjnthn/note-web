@@ -1,0 +1,43 @@
+.file_edit form {
+  display: flex;
+}
+
+.file_edit form textarea {
+  width: calc(100vw - 15rem);
+  height: 100vh;
+  height: 100dvh;
+  resize: none;
+  border: none;
+  padding: 3rem;
+  font-size: 1rem;
+  outline: none;
+}
+
+.not_found {
+  width: calc(100vw - 15rem);
+  height: 100vh;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.not_found > span:first-child {
+  font-size: 6rem;
+  letter-spacing: 1rem;
+  font-weight: 800;
+}
+
+@media screen and (max-width: 800px) {
+  .file_edit form {
+    padding-top: 4rem;
+  }
+
+  .file_edit form textarea {
+    padding: 2rem;
+    width: 100%;
+    height: calc(100vh - 4rem);
+    height: calc(100dvh - 4rem);
+  }
+}
