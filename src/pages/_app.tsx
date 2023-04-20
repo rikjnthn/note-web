@@ -1,5 +1,4 @@
 import type { AppProps } from "next/app";
-import { useRouter } from "next/router";
 
 import PocketProvider from "@/context/PocketProvider";
 

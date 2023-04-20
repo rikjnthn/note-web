@@ -42,14 +42,7 @@ export default function Login() {
         loginInput.email_or_username,
         loginInput.password
       );
-      const date = new Date();
-      const time = date.getTime();
-      const expired = time + 1000 * 3600 * 24 * 30;
-      date.setTime(expired);
-      document.cookie =
-        pb?.authStore.exportToCookie({ secure: true, expires: date }) ?? "";
-      const username = await loginData.record.username;
-      window.location.href = `${window.location.origin}/${username}`;
+      window.location.href = `${window.location.origin}/notes`;
     } catch (e) {
       setError(() => true);
     } finally {
@@ -120,19 +113,19 @@ export default function Login() {
   );
 }
 
-export async function getServerSideProps({
-  req,
-}: GetServerSidePropsContext): Promise<GetServerSidePropsResult<any>> {
-  if (req.cookies.pb_auth) {
-    return {
-      redirect: {
-        destination: `/${JSON.parse(req.cookies.pb_auth ?? "").model.username}`,
-        permanent: false,
-      },
-      props: {},
-    };
-  }
-  return {
-    props: {},
-  };
-}
+// export async function getServerSideProps({
+//   req,
+// }: GetServerSidePropsContext): Promise<GetServerSidePropsResult<any>> {
+//   if (req.cookies.pb_auth) {
+//     return {
+//       redirect: {
+//         destination: `/${JSON.parse(req.cookies.pb_auth ?? "").model.username}`,
+//         permanent: false,
+//       },
+//       props: {},
+//     };
+//   }
+//   return {
+//     props: {},
+//   };
+// }

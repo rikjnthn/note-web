@@ -92,7 +92,7 @@ export default function SignUp() {
       const expired = time + 1000*3600*24*30
       date.setTime(expired)  
       document.cookie = pb?.authStore.exportToCookie({secure: true, expires: date}) ?? ''
-      window.location.href = `${window.location.origin}/${registerResult.username}`;
+      window.location.href = `${window.location.origin}/notes`;
     } catch (e: any) {
       const responseErr = e.response.data;
       setErr(() => {
