@@ -208,19 +208,19 @@ export default function SignUp() {
   );
 }
 
-export async function getServerSideProps({
-  req,
-}: GetServerSidePropsContext): Promise<GetServerSidePropsResult<any>> {
-  if (req.cookies.pb_auth) {
-    return {
-      redirect: {
-        destination: `/${JSON.parse(req.cookies.pb_auth ?? "").model.username}`,
-        permanent: false,
-      },
-      props: {},
-    };
-  }
-  return {
-    props: {},
-  };
-}
+// export async function getServerSideProps({
+//   req,
+// }: GetServerSidePropsContext): Promise<GetServerSidePropsResult<any>> {
+//   if (req.cookies.pb_auth) {
+//     return {
+//       redirect: {
+//         destination: `/${JSON.parse(req.cookies.pb_auth ?? "").model.username}`,
+//         permanent: false,
+//       },
+//       props: {},
+//     };
+//   }
+//   return {
+//     props: {},
+//   };
+// }
