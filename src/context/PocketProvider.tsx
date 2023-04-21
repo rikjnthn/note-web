@@ -10,7 +10,6 @@ import Pocketbase, {
   RecordAuthResponse,
   Record,
   Admin,
-  ListResult,
 } from "pocketbase";
 import jwtDecode from "jwt-decode";
 
@@ -45,14 +44,22 @@ const PocketBase = ({
   children: JSX.Element | JSX.Element[];
 }) => {
   const pb = new Pocketbase(BASE_URL);
+  const date = new Date();
 
+  
   const [token, setToken] = useState<string>(pb.authStore.token);
   const [user, setUser] = useState<Record | Admin | null>(pb.authStore.model);
-
+  
   useEffect(() => {
+    pb.authStore.loadFromCookie(document.cookie)
     pb.authStore.onChange((token, user) => {
       setToken(() => token);
       setUser(() => user);
+      date.setDate(date.getDate() + 30);
+      document.cookie = pb.authStore.exportToCookie({
+        httpOnly: false,
+        expires: date,
+      });
     });
   }, [pb.authStore]);
 

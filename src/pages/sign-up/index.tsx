@@ -214,7 +214,7 @@ export async function getServerSideProps({
   if (req.cookies.pb_auth) {
     return {
       redirect: {
-        destination: `/${JSON.parse(req.cookies.pb_auth ?? "").model.username}`,
+        destination: `/notes`,
         permanent: false,
       },
       props: {},

@@ -1,16 +1,7 @@
-.file_edit form {
-  display: flex;
-}
-
-.file_edit form textarea {
-  width: calc(100vw - 15rem);
-  height: 100vh;
-  height: 100dvh;
-  resize: none;
-  border: none;
-  padding: 3rem;
-  font-size: 1rem;
-  outline: none;
+.file_edit form button {
+  position: absolute;
+  top: 3rem; right: 3rem;
+  z-index: -1;
 }
 
 .not_found {
@@ -29,15 +20,3 @@
   font-weight: 800;
 }
 
-@media screen and (max-width: 800px) {
-  .file_edit form {
-    padding-top: 4rem;
-  }
-
-  .file_edit form textarea {
-    padding: 2rem;
-    width: 100%;
-    height: calc(100vh - 4rem);
-    height: calc(100dvh - 4rem);
-  }
-}

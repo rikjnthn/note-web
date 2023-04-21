@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/router";
 
@@ -15,10 +15,12 @@ const Folder = ({
   folderName: string;
   folderId: string;
 }) => {
-  const { pb, user } = usePocket();
+  const { pb } = usePocket();
   const router = useRouter();
 
-  const [open, setOpen] = useState<boolean>(false);
+  const [open, setOpen] = useState<boolean>(
+    JSON.parse(localStorage.getItem(folderId) ?? "") ?? false
+  );
   const [addFile, setAddFile] = useState<boolean>(false);
 
   const handleAddFile = () => {
@@ -27,14 +29,22 @@ const Folder = ({
   };
 
   const handleDelete = async () => {
-    router.push(`${window.location.origin}/${user?.username}`);
+    router.push(`${window.location.origin}/notes`);
     await pb?.collection("notes_folder").delete(folderId);
   };
+
+  const handleFolderOpen = () => {
+    setOpen((prevOpen) => !prevOpen);
+  };
+
+  useEffect(() => {
+    localStorage.setItem(folderId, JSON.stringify(open));
+  }, [open]);
 
   return (
     <li>
       <div className={style.folder}>
-        <div onClick={() => setOpen((prevOpen) => !prevOpen)}>
+        <div onClick={handleFolderOpen}>
           <Image
             className={open ? "rotate-90deg" : ""}
             src="/assets/arrow.svg"

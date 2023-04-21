@@ -8,14 +8,16 @@ export default function App({
   Component,
   pageProps,
 }: AppProps & {
-  Component: { getLayout?: (page: React.ReactElement) => React.ReactNode };
+  Component: { getLayout?: (page: React.ReactElement) => JSX.Element };
 }) {
   const getLayout = Component.getLayout ?? ((page) => page);
-  return getLayout(
+  return (
     <PocketProvider>
-      <div className="flex">
-        <Component {...pageProps} />
-      </div>
+      {getLayout(
+        <div className="flex">
+          <Component {...pageProps} />
+        </div>
+      )}
     </PocketProvider>
   );
 }

@@ -25,18 +25,16 @@ export default function Home() {
 export async function getServerSideProps(
   context: GetServerSidePropsContext
 ): Promise<GetServerSidePropsResult<any>> {
-  // if (!context.req.cookies) {
+  if (context.req.cookies.pb_auth) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/notes",
+      },
+    };
+  }
+
   return {
-    redirect: {
-      permanent: false,
-      destination: "/login",
-    },
+    props: {},
   };
-  // }
-
-  // return {
-  //   props: {
-
-  //   }
-  // }
 }

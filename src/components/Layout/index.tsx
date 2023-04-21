@@ -5,7 +5,7 @@ import Hamburger from "../Hamburger";
 const Layout = ({ children }: { children: JSX.Element | JSX.Element[] }) => {
   const [hamburger, setHamburger] = useState<boolean>(false);
   return (
-    <div>
+    <div className="flex">
       <Hamburger hamburger={hamburger} setHamburger={setHamburger} />
       <SideNav open={hamburger} />
       {children}

@@ -12,7 +12,7 @@ const Hamburger = ({
     setHamburger((prev) => !prev)
   }
   return (
-    <button onClick={handleHamburger} className={`hamburger ${hamburger ? 'hamburger_click': ''}`}>
+    <button onClick={handleHamburger} type="button" className={`hamburger ${hamburger ? 'hamburger_click': ''}`}>
       <Image
         src="/assets/hamburger-icon.svg"
         alt="hamburger"

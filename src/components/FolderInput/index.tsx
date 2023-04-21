@@ -18,7 +18,7 @@ const FolderInput = ({
 
   const createFolder = async () => {
     try {
-      const data = await pb
+      await pb
         ?.collection("notes_folder")
         .create({ folder_name: folderName, user: user?.id });
 
