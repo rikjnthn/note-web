@@ -6,11 +6,7 @@ import React, {
   useState,
 } from "react";
 
-import Pocketbase, {
-  RecordAuthResponse,
-  Record,
-  Admin,
-} from "pocketbase";
+import Pocketbase, { RecordAuthResponse, Record, Admin } from "pocketbase";
 import jwtDecode from "jwt-decode";
 
 import useInterval from "@/hooks/useInterval";
@@ -46,22 +42,34 @@ const PocketBase = ({
   const pb = new Pocketbase(BASE_URL);
   const date = new Date();
 
-  
   const [token, setToken] = useState<string>(pb.authStore.token);
   const [user, setUser] = useState<Record | Admin | null>(pb.authStore.model);
-  
+
   useEffect(() => {
-    pb.authStore.loadFromCookie(document.cookie)
+    pb.authStore.loadFromCookie(document.cookie);
     pb.authStore.onChange((token, user) => {
       setToken(() => token);
       setUser(() => user);
+
+      if (user) {
+        date.setDate(date.getDate() + 30);
+        document.cookie = pb.authStore.exportToCookie({
+          httpOnly: false,
+          expires: date,
+        });
+      }
+    });
+  }, [pb.authStore]);
+
+  useEffect(() => {
+    if (pb.authStore.model) {
       date.setDate(date.getDate() + 30);
       document.cookie = pb.authStore.exportToCookie({
         httpOnly: false,
         expires: date,
       });
-    });
-  }, [pb.authStore]);
+    }
+  }, []);
 
   const register = async (
     username: string,
@@ -98,7 +106,6 @@ const PocketBase = ({
   }, [token]);
 
   useInterval(refreshSession, token ? twoMinutesInMs : null);
-
   return (
     <PocketContext.Provider
       value={{ login, register, logout, user, token, pb }}

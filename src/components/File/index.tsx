@@ -8,7 +8,7 @@ import { usePocket } from "@/context/PocketProvider";
 import style from "./File.module.css";
 
 const File = ({ fileName, fileId }: { fileName: string; fileId: string }) => {
-  const { pb, user } = usePocket();
+  const { pb } = usePocket();
 
   const router = useRouter();
   const { fileID } = router.query;

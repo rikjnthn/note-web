@@ -7,11 +7,11 @@ import style from "./ContentInput.module.css";
 import { openSans } from "@/fonts";
 import Image from "next/image";
 
-const ContentInput = ({ content }: { content?: string }) => {
+const ContentInput = () => {
   const { pb } = usePocket();
   const { fileID } = useRouter().query;
 
-  const [inputContent, setInputContent] = useState<string>(content ?? "");
+  const [inputContent, setInputContent] = useState<string>("");
   const [isLoading, setIsloading] = useState<boolean>(true);
 
   const handleInput = (e: React.FormEvent<HTMLTextAreaElement>) => {

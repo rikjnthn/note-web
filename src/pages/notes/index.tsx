@@ -1,10 +1,19 @@
 import React from "react";
 import type { GetServerSidePropsContext, GetServerSidePropsResult } from "next";
 
+import Pocketbase from 'pocketbase'
+
 import Layout from "@/components/Layout";
+import Head from "next/head";
 
 export default function Notes() {
-  return <></>;
+  return (
+    <>
+      <Head>
+        <title>Note Web</title>
+      </Head>
+    </>
+  );
 }
 
 Notes.getLayout = function getLayout(page: React.ReactElement) {
@@ -14,7 +23,11 @@ Notes.getLayout = function getLayout(page: React.ReactElement) {
 export async function getServerSideProps({
   req,
 }: GetServerSidePropsContext): Promise<GetServerSidePropsResult<any>> {
-  if (!req.cookies.pb_auth) {
+  const pb = new Pocketbase('http://127.0.0.1:8090')
+
+  pb.authStore.loadFromCookie(req.headers.cookie ?? "")
+
+  if (!pb.authStore.model) {
     return {
       redirect: {
         destination: "/login",

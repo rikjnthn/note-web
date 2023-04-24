@@ -38,9 +38,8 @@ const FileList = ({ addFile, setAddFile, folderId }: FileListPropsType) => {
   const pbSubscribe = async () => {
     unsubscribe = await pb
       ?.collection("notes_file")
-      .subscribe("*", async (e) => {
-        if (e.action === "create") await getFile();
-        if (e.action === "delete") await getFile();
+      .subscribe("*", async () => {
+        await getFile();
       });
   };
 

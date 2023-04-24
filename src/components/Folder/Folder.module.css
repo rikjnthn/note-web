@@ -1,3 +1,7 @@
+.folder_container {
+  height: 2rem;
+}
+
 .folder {
   display: flex;
   align-items: center;

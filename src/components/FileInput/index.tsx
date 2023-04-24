@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 
+import { sanitize } from "dompurify";
+
 import { usePocket } from "@/context/PocketProvider";
 
 import style from "./FileInput.module.css";
-import { sanitize } from "dompurify";
 
 const FileInput = ({
-  setAddFile,
+setAddFile,
   folderId,
 }: {
   setAddFile: React.Dispatch<React.SetStateAction<boolean>>;
@@ -19,7 +20,7 @@ const FileInput = ({
 
   const createFile = async () => {
     try {
-      const data = await pb
+      await pb
         ?.collection("notes_file")
         .create({ file_name: fileName, folder: folderId });
 
@@ -40,8 +41,8 @@ const FileInput = ({
   };
 
   const handleInput = (e: React.FormEvent<HTMLInputElement>) => {
-    const inp = sanitize(e.currentTarget.value);
-    setFileName(() => inp);
+    const inp = sanitize(e.currentTarget.value, {RETURN_DOM: true});
+    setFileName(() => inp.textContent ?? '');
     setError(() => false);
   };
 

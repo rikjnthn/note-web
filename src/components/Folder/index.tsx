@@ -19,7 +19,7 @@ const Folder = ({
   const router = useRouter();
 
   const [open, setOpen] = useState<boolean>(
-    JSON.parse(localStorage.getItem(folderId) ?? "") ?? false
+    JSON.parse(localStorage.getItem(folderId) ?? "false")
   );
   const [addFile, setAddFile] = useState<boolean>(false);
 
@@ -42,7 +42,7 @@ const Folder = ({
   }, [open]);
 
   return (
-    <li>
+    <li className={style.folder_container}>
       <div className={style.folder}>
         <div onClick={handleFolderOpen}>
           <Image

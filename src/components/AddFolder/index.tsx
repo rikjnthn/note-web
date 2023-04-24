@@ -9,7 +9,7 @@ interface AddFolderPropsType {
 
 const AddFolder = ({ setAddFolder }: AddFolderPropsType) => {
   const handleAddFolder = () => {
-    setAddFolder((prev) => !prev);
+    setAddFolder(() => true);
   };
 
   return (

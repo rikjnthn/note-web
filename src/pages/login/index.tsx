@@ -4,6 +4,7 @@ import Head from "next/head";
 import { GetServerSidePropsContext, GetServerSidePropsResult } from "next";
 
 import isEmail from "validator/lib/isEmail";
+import Pocketbase from 'pocketbase'
 
 import { usePocket } from "@/context/PocketProvider";
 
@@ -11,7 +12,7 @@ import style from "@/styles/Login.module.css";
 import SubmitButton from "@/components/SubmitButton";
 
 export default function Login() {
-  const { login, pb } = usePocket();
+  const { login } = usePocket();
   const [error, setError] = useState<boolean>(false);
   const [loginInput, setLoginInput] = useState<{
     email_or_username: string;
@@ -38,10 +39,7 @@ export default function Login() {
     e.preventDefault();
     try {
       setLoading(() => true);
-      const loginData = await login!(
-        loginInput.email_or_username,
-        loginInput.password
-      );
+      await login!(loginInput.email_or_username, loginInput.password);
       window.location.href = `${window.location.origin}/notes`;
     } catch (e) {
       setError(() => true);
@@ -116,7 +114,11 @@ export default function Login() {
 export async function getServerSideProps({
   req,
 }: GetServerSidePropsContext): Promise<GetServerSidePropsResult<any>> {
-  if (req.cookies.pb_auth) {
+  const pb = new Pocketbase('http://127.0.0.1:8090')
+
+  pb.authStore.loadFromCookie(req.headers.cookie ?? "")
+
+  if (pb.authStore.model) {
     return {
       redirect: {
         destination: `/notes`,

@@ -34,8 +34,8 @@ const FolderInput = ({
   };
 
   const handleInput = (e: React.FormEvent<HTMLInputElement>) => {
-    const inp = sanitize(e.currentTarget.value);
-    setFolderName(() => inp);
+    const inp = sanitize(e.currentTarget.value, {RETURN_DOM: true});
+    setFolderName(() => inp.textContent ?? '');
     setError(() => false);
   };
 

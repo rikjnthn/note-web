@@ -1,23 +1,35 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Head from "next/head";
+import { useRouter } from "next/router";
 import type { GetServerSidePropsContext, GetServerSidePropsResult } from "next";
 
-import pocketbaseInit from "@/helper/PocketbaseInit";
+import Pocketbase from 'pocketbase'
+
+import { usePocket } from "@/context/PocketProvider";
 
 import Layout from "@/components/Layout";
 import style from "@/styles/App.module.css";
 import { openSans } from "@/fonts";
 import ContentInput from "@/components/ContentInput";
 
-export default function FileContent({
-  isExist,
-  fileName,
-  content,
-}: {
-  isExist: boolean;
-  fileName: string;
-  content?: string;
-}) {
+export default function FileContent() {
+  const { pb } = usePocket();
+  const { fileID } = useRouter().query;
+
+  const [isExist, setIsExist] = useState<boolean>(true);
+  const [fileName, setFileName] = useState<string>("");
+
+  useEffect(() => {
+    if (typeof fileID === "string")
+      pb?.collection("notes_file")
+        .getOne(fileID, { $autoCancel: false })
+        .then((res) => {
+          setFileName(() => res.file_name);
+          setIsExist(() => true);
+        })
+        .catch(() => setIsExist(() => false));
+  }, [fileID]);
+
   if (isExist) {
     return (
       <>
@@ -27,7 +39,7 @@ export default function FileContent({
         </Head>
 
         <main className={`${style.file_edit} ${openSans.className}`}>
-          <ContentInput content={content} />
+          <ContentInput />
         </main>
       </>
     );
@@ -52,42 +64,20 @@ FileContent.getLayout = function getLayout(page: React.ReactElement) {
 
 export async function getServerSideProps({
   req,
-  res,
-  query,
 }: GetServerSidePropsContext): Promise<GetServerSidePropsResult<any>> {
-  const pb = await pocketbaseInit(req);
-  pb.authStore.onChange(() => {
-    const date = new Date();
-    date.setTime(date.getDate() + 30);
-    res.setHeader(
-      "set-cookies",
-      pb.authStore.exportToCookie({ secure: true, expires: date })
-    );
-  });
+  const pb = new Pocketbase('http://127.0.0.1:8090')
 
-  try {
-    if (typeof query.fileID === "string") {
-      const record = await pb.collection("notes_file").getOne(query.fileID);
+  pb.authStore.loadFromCookie(req.headers.cookie ?? "")
 
-      return {
-        props: {
-          isExist: true,
-          fileName: record.file_name,
-          content: record.notes_content,
-        },
-      };
-    }
-
+  if (!pb.authStore.model) {
     return {
-      props: {
-        isExist: false,
-      },
-    };
-  } catch {
-    return {
-      props: {
-        isExist: false,
+      redirect: {
+        destination: "/login",
+        permanent: false,
       },
     };
   }
+  return {
+    props: {},
+  };
 }

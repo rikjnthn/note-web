@@ -1,6 +1,9 @@
-import React, { useState, useReducer, useEffect, useCallback } from "react";
+import React, { useState, useReducer, useEffect } from "react";
 import Link from "next/link";
 import Head from "next/head";
+import type { GetServerSidePropsContext, GetServerSidePropsResult } from "next";
+
+import Pocketbase from 'pocketbase'
 
 import { usePocket } from "@/context/PocketProvider";
 
@@ -12,7 +15,6 @@ import type {
 import { SIGNUP_ACTION } from "@/constant/Signup";
 import style from "@/styles/Signup.module.css";
 import SubmitButton from "@/components/SubmitButton";
-import { GetServerSidePropsContext, GetServerSidePropsResult } from "next";
 
 const initialSignupInput: SignUpInputType = {
   username: "",
@@ -83,14 +85,12 @@ export default function SignUp() {
     setLoading(() => true);
     try {
       const { username, confirm_password, email, password } = signupInput;
-      const [registerResult] = await Promise.all([
+      Promise.all([
         await register!(username, email, password, confirm_password),
         await login!(email ?? username, password),
       ]);
       const date = new Date()
-      const time = date.getTime()
-      const expired = time + 1000*3600*24*30
-      date.setTime(expired)  
+      date.setDate(date.getDate() + 30)
       document.cookie = pb?.authStore.exportToCookie({secure: true, expires: date}) ?? ''
       window.location.href = `${window.location.origin}/notes`;
     } catch (e: any) {
@@ -123,7 +123,6 @@ export default function SignUp() {
     });
   };
 
-  const MemoizedLink = useCallback(() => <Link href="/login">login</Link>, []);
   return (
     <>
       <Head>
@@ -211,7 +210,11 @@ export default function SignUp() {
 export async function getServerSideProps({
   req,
 }: GetServerSidePropsContext): Promise<GetServerSidePropsResult<any>> {
-  if (req.cookies.pb_auth) {
+  const pb = new Pocketbase('http://127.0.0.1:8090')
+
+  pb.authStore.loadFromCookie(req.headers.cookie ?? "")
+
+  if (pb.authStore.model) {
     return {
       redirect: {
         destination: `/notes`,

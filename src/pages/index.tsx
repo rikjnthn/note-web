@@ -12,12 +12,12 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
 
-      {/* <main className={openSans.className}>
+      <main className={openSans.className}>
         <header>
           <h2>Notes Web</h2>
           jadi ini harusnya desain buat homepage?
         </header>
-      </main> */}
+      </main>
     </>
   );
 }
