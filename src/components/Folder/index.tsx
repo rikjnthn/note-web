@@ -42,7 +42,7 @@ const Folder = ({
   }, [open]);
 
   return (
-    <li className={style.folder_container}>
+    <li>
       <div className={style.folder}>
         <div onClick={handleFolderOpen}>
           <Image
