@@ -29,14 +29,15 @@ const Folder = ({
   };
 
   const handleDelete = async () => {
-    router.push(`${window.location.origin}/notes`);
     await pb?.collection("notes_folder").delete(folderId);
+    localStorage.removeItem(folderId)
+    router.push(`${window.location.origin}/notes`);
   };
 
   const handleFolderOpen = () => {
     setOpen((prevOpen) => !prevOpen);
   };
-
+  
   useEffect(() => {
     localStorage.setItem(folderId, JSON.stringify(open));
   }, [open]);

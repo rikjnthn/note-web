@@ -42,7 +42,7 @@ const User = () => {
             />
           </button>
           <div className={style.option}>
-            <Link href="/setting" target="_blank">
+            {/* <Link href="/setting" target="_blank">
               <Image
                 src="/assets/setting.svg"
                 alt="setting"
@@ -50,7 +50,7 @@ const User = () => {
                 height={15}
               />
               <span>Setting</span>
-            </Link>
+            </Link> */}
             <button onClick={handleLogout} type="button">
               <Image
                 src="/assets/logout.svg"
