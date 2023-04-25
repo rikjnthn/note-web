@@ -11,5 +11,5 @@
 }
 
 .add_folder:hover {
-  background-color: aliceblue;
+  background-color: var(--hover-1);
 }
