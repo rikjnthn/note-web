@@ -7,6 +7,9 @@
 
 # testing
 /coverage
+jest.config.mjs
+__test__
+*.test.tsx
 
 # next.js
 /.next/
@@ -27,6 +30,7 @@ yarn-error.log*
 
 # local env files
 .env*.local
+.env
 
 # vercel
 .vercel
