@@ -3,7 +3,7 @@ import Link from "next/link";
 import Head from "next/head";
 import type { GetServerSidePropsContext, GetServerSidePropsResult } from "next";
 
-import Pocketbase from 'pocketbase'
+import Pocketbase from "pocketbase";
 
 import { usePocket } from "@/context/PocketProvider";
 
@@ -89,9 +89,10 @@ export default function SignUp() {
         await register!(username, email, password, confirm_password),
         await login!(email ?? username, password),
       ]);
-      const date = new Date()
-      date.setDate(date.getDate() + 30)
-      document.cookie = pb?.authStore.exportToCookie({secure: true, expires: date}) ?? ''
+      const date = new Date();
+      date.setDate(date.getDate() + 30);
+      document.cookie =
+        pb?.authStore.exportToCookie({ secure: true, expires: date }) ?? "";
       window.location.href = `${window.location.origin}/notes`;
     } catch (e: any) {
       const responseErr = e.response.data;
@@ -210,9 +211,9 @@ export default function SignUp() {
 export async function getServerSideProps({
   req,
 }: GetServerSidePropsContext): Promise<GetServerSidePropsResult<any>> {
-  const pb = new Pocketbase()
+  const pb = new Pocketbase();
 
-  pb.authStore.loadFromCookie(req.headers.cookie ?? "")
+  pb.authStore.loadFromCookie(req.headers.cookie ?? "");
 
   if (pb.authStore.model) {
     return {

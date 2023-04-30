@@ -3,11 +3,11 @@ import Image from "next/image";
 
 import style from "./AddFolder.module.css";
 
-interface AddFolderPropsType {
+const AddFolder = ({
+  setAddFolder,
+}: {
   setAddFolder: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-const AddFolder = ({ setAddFolder }: AddFolderPropsType) => {
+}) => {
   const handleAddFolder = () => {
     setAddFolder(() => true);
   };

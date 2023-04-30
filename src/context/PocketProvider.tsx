@@ -5,32 +5,16 @@ import React, {
   useEffect,
   useState,
 } from "react";
-import process from "process";
 
-import Pocketbase, { RecordAuthResponse, Record, Admin } from "pocketbase";
+import Pocketbase, { Record, Admin } from "pocketbase";
 import jwtDecode from "jwt-decode";
 
 import useInterval from "@/hooks/useInterval";
+import type { PocketContextType, TokenType } from "@/types/PocketProvider"; 
 
 const fiveMinutesInMs: number = 300_000; // 5 * 60 * 1000
 const twoMinutesInMs: number = 120_000; // 2 * 60 * 1000
 
-interface PocketContextType {
-  login?: (
-    usernameOrEmail: string,
-    password: string
-  ) => Promise<RecordAuthResponse<Record>>;
-  register?: (
-    username: string,
-    email: string,
-    password: string,
-    passwordConfirm: string
-  ) => Promise<Record>;
-  logout?: () => void;
-  user?: Record | Admin | null;
-  token?: string;
-  pb?: Pocketbase;
-}
 
 const PocketContext = createContext<PocketContextType>({});
 
@@ -92,9 +76,7 @@ const PocketBase = ({
     pb.authStore.clear();
   };
 
-  interface TokenType {
-    exp: number;
-  }
+
 
   const refreshSession = useCallback(async () => {
     if (!pb.authStore.isValid) return;

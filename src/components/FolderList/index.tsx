@@ -8,12 +8,13 @@ import style from "./FolderList.module.css";
 import Folder from "../Folder";
 import FolderInput from "../FolderInput";
 
-interface FolderListPropsType {
+const FolderList = ({
+  addFolder,
+  setAddFolder,
+}: {
   addFolder: boolean;
   setAddFolder: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-const FolderList = ({ addFolder, setAddFolder }: FolderListPropsType) => {
+}) => {
   const { pb, user } = usePocket();
 
   const [folder, setFolder] = useState<Record[] | undefined>();

@@ -1,7 +1,7 @@
 import React from "react";
 import type { GetServerSidePropsContext, GetServerSidePropsResult } from "next";
 
-import Pocketbase from 'pocketbase'
+import Pocketbase from "pocketbase";
 
 import Layout from "@/components/Layout";
 import Head from "next/head";
@@ -23,9 +23,9 @@ Notes.getLayout = function getLayout(page: React.ReactElement) {
 export async function getServerSideProps({
   req,
 }: GetServerSidePropsContext): Promise<GetServerSidePropsResult<any>> {
-  const pb = new Pocketbase()
+  const pb = new Pocketbase();
 
-  pb.authStore.loadFromCookie(req.headers.cookie ?? "")
+  pb.authStore.loadFromCookie(req.headers.cookie ?? "");
 
   if (!pb.authStore.model) {
     return {
