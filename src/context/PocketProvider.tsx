@@ -5,6 +5,7 @@ import React, {
   useEffect,
   useState,
 } from "react";
+import process from "process";
 
 import Pocketbase, { RecordAuthResponse, Record, Admin } from "pocketbase";
 import jwtDecode from "jwt-decode";
@@ -13,7 +14,6 @@ import useInterval from "@/hooks/useInterval";
 
 const fiveMinutesInMs: number = 300_000; // 5 * 60 * 1000
 const twoMinutesInMs: number = 120_000; // 2 * 60 * 1000
-const BASE_URL = "http://127.0.0.1:8090";
 
 interface PocketContextType {
   login?: (
@@ -39,7 +39,7 @@ const PocketBase = ({
 }: {
   children: JSX.Element | JSX.Element[];
 }) => {
-  const pb = new Pocketbase(BASE_URL);
+  const pb = new Pocketbase("http://127.0.0.1:8090");
   const date = new Date();
 
   const [token, setToken] = useState<string>(pb.authStore.token);

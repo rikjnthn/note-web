@@ -30,14 +30,15 @@ const Folder = ({
 
   const handleDelete = async () => {
     await pb?.collection("notes_folder").delete(folderId);
-    localStorage.removeItem(folderId)
-    router.push(`${window.location.origin}/notes`);
+    localStorage.removeItem(folderId);
+    if (window.location.href !== `${window.location.origin}/notes`)
+      router.push(`${window.location.origin}/notes`);
   };
 
   const handleFolderOpen = () => {
     setOpen((prevOpen) => !prevOpen);
   };
-  
+
   useEffect(() => {
     localStorage.setItem(folderId, JSON.stringify(open));
   }, [open]);
