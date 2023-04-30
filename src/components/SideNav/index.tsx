@@ -29,7 +29,7 @@ const SideNav = ({ open }: { open: boolean }) => {
       <div style={{ marginTop: "auto" }}>
         <AddFolder setAddFolder={setAddFolder} />
       </div>
-{/* 
+      {/* 
       <div className={style.setting}>
         <Link href="/setting">
           <span>Setting</span>

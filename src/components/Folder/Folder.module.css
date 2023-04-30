@@ -39,3 +39,13 @@
   align-items: center;
   gap: 10px;
 }
+
+@media (pointer: coarse) {
+  .folder:hover{
+    background-color: transparent;
+  }
+
+  .add_file_delete_folder img {
+    visibility: visible;
+  }
+}

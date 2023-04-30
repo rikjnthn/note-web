@@ -10,6 +10,22 @@
   padding: 0 1rem;
 }
 
-.add_folder:hover {
+.add_folder:hover{
   background-color: var(--hover-1);
+}
+
+
+@media (pointer: coarse) {
+  .add_folder {
+    transition: background 500ms;
+  }
+
+  .add_folder:hover {
+    background: transparent;
+  }
+  
+  .add_folder:active {
+    background-color: var(--hover-1);
+  }
+
 }

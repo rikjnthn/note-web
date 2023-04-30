@@ -3,7 +3,7 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import type { GetServerSidePropsContext, GetServerSidePropsResult } from "next";
 
-import Pocketbase from 'pocketbase'
+import Pocketbase from "pocketbase";
 
 import { usePocket } from "@/context/PocketProvider";
 
@@ -16,7 +16,7 @@ export default function FileContent() {
   const { pb } = usePocket();
   const { fileID } = useRouter().query;
 
-  const [isExist, setIsExist] = useState<boolean>(true);
+  const [isExist, setIsExist] = useState<boolean>(false);
   const [fileName, setFileName] = useState<string>("");
 
   useEffect(() => {
@@ -65,9 +65,9 @@ FileContent.getLayout = function getLayout(page: React.ReactElement) {
 export async function getServerSideProps({
   req,
 }: GetServerSidePropsContext): Promise<GetServerSidePropsResult<any>> {
-  const pb = new Pocketbase('http://127.0.0.1:8090')
+  const pb = new Pocketbase("http://127.0.0.1:8090");
 
-  pb.authStore.loadFromCookie(req.headers.cookie ?? "")
+  pb.authStore.loadFromCookie(req.headers.cookie ?? "");
 
   if (!pb.authStore.model) {
     return {

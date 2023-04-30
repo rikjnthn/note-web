@@ -13,7 +13,7 @@ import useInterval from "@/hooks/useInterval";
 
 const fiveMinutesInMs: number = 300_000; // 5 * 60 * 1000
 const twoMinutesInMs: number = 120_000; // 2 * 60 * 1000
-const BASE_URL: "http://127.0.0.1:8090" = "http://127.0.0.1:8090";
+const BASE_URL = "http://127.0.0.1:8090";
 
 interface PocketContextType {
   login?: (

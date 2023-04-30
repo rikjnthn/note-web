@@ -198,7 +198,7 @@ export default function SignUp() {
                 <Link href="/login">login</Link>
                 {/* <MemoizedLink /> */}
               </div>
-              <SubmitButton loading={loading} value="Sign up" />
+              <SubmitButton loading={loading} value="Create" />
             </div>
           </form>
         </div>
