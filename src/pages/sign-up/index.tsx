@@ -210,7 +210,7 @@ export default function SignUp() {
 export async function getServerSideProps({
   req,
 }: GetServerSidePropsContext): Promise<GetServerSidePropsResult<any>> {
-  const pb = new Pocketbase('http://127.0.0.1:8090')
+  const pb = new Pocketbase()
 
   pb.authStore.loadFromCookie(req.headers.cookie ?? "")
 
