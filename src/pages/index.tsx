@@ -12,12 +12,12 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
 
-      {/* <main className={openSans.className}>
+      <main className={openSans.className}>
         <header>
           <h2>Notes Web</h2>
           jadi ini harusnya desain buat homepage?
         </header>
-      </main> */}
+      </main>
     </>
   );
 }
@@ -25,18 +25,16 @@ export default function Home() {
 export async function getServerSideProps(
   context: GetServerSidePropsContext
 ): Promise<GetServerSidePropsResult<any>> {
-  // if (!context.req.cookies) {
+  if (context.req.cookies.pb_auth) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/notes",
+      },
+    };
+  }
+
   return {
-    redirect: {
-      permanent: false,
-      destination: "/login",
-    },
+    props: {},
   };
-  // }
-
-  // return {
-  //   props: {
-
-  //   }
-  // }
 }

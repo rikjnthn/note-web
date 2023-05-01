@@ -16,14 +16,26 @@ const FolderInput = ({
   const [folderName, setFolderName] = useState<string>("");
   const [error, setError] = useState<boolean>(false);
 
+  const checkHasFolder = async () => {
+    const record = await pb?.collection("notes_folder").getFullList({
+      filter: `user.id='${user?.id}'`,
+      $autoCancel: false,
+    });
+    return record?.filter((value) => value.folder_name === folderName);
+  };
+
   const createFolder = async () => {
     try {
-      const data = await pb
+      const isAlreadyhas = await checkHasFolder();
+
+      if (isAlreadyhas?.length) throw new Error("Folder name has already use");
+
+      await pb
         ?.collection("notes_folder")
         .create({ folder_name: folderName, user: user?.id });
 
       setAddFolder(() => false);
-    } catch (e: any) {
+    } catch {
       setError(() => true);
     }
   };
@@ -34,8 +46,8 @@ const FolderInput = ({
   };
 
   const handleInput = (e: React.FormEvent<HTMLInputElement>) => {
-    const inp = sanitize(e.currentTarget.value);
-    setFolderName(() => inp);
+    const inp = sanitize(e.currentTarget.value, { RETURN_DOM: true });
+    setFolderName(() => inp.textContent ?? "");
     setError(() => false);
   };
 

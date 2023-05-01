@@ -8,19 +8,20 @@ import style from "./FolderList.module.css";
 import Folder from "../Folder";
 import FolderInput from "../FolderInput";
 
-interface FolderListPropsType {
+const FolderList = ({
+  addFolder,
+  setAddFolder,
+}: {
   addFolder: boolean;
   setAddFolder: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-const FolderList = ({ addFolder, setAddFolder }: FolderListPropsType) => {
+}) => {
   const { pb, user } = usePocket();
 
   const [folder, setFolder] = useState<Record[] | undefined>();
 
   const getFolder = async () => {
     const data = await pb?.collection("notes_folder").getList(1, 50, {
-      filter: `(user.id="${user?.id}")`,
+      filter: `user.id="${user?.id}"`,
       sort: "+folder_name",
       $autoCancel: false,
     });
@@ -36,9 +37,8 @@ const FolderList = ({ addFolder, setAddFolder }: FolderListPropsType) => {
   const pbSubscribe = async () => {
     unsubscribe = await pb
       ?.collection("notes_folder")
-      .subscribe("*", async (e) => {
-        if (e.action === "create") await getFolder();
-        if (e.action === "delete") await getFolder();
+      .subscribe("*", async () => {
+        await getFolder();
       });
   };
 

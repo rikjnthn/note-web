@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 
+import { sanitize } from "dompurify";
+
 import { usePocket } from "@/context/PocketProvider";
 
 import style from "./FileInput.module.css";
-import { sanitize } from "dompurify";
 
 const FileInput = ({
   setAddFile,
@@ -17,14 +18,24 @@ const FileInput = ({
   const [fileName, setFileName] = useState<string>("");
   const [error, setError] = useState<boolean>(false);
 
+  const checkHasFile = async () => {
+    const record = await pb?.collection("notes_file").getFullList({
+      filter: `folder.id='${folderId}'`,
+      $autoCancel: false,
+    });
+    return record?.filter((value) => value.file_name === fileName);
+  };
+
   const createFile = async () => {
     try {
-      const data = await pb
+      const isAlreadyHas = await checkHasFile();
+      if (isAlreadyHas?.length) throw new Error("File name has already use");
+      await pb
         ?.collection("notes_file")
         .create({ file_name: fileName, folder: folderId });
 
       setAddFile(() => false);
-    } catch (e: any) {
+    } catch {
       setError(() => true);
     }
   };
@@ -40,8 +51,8 @@ const FileInput = ({
   };
 
   const handleInput = (e: React.FormEvent<HTMLInputElement>) => {
-    const inp = sanitize(e.currentTarget.value);
-    setFileName(() => inp);
+    const inp = sanitize(e.currentTarget.value, { RETURN_DOM: true });
+    setFileName(() => inp.textContent ?? "");
     setError(() => false);
   };
 
@@ -54,7 +65,7 @@ const FileInput = ({
         value={fileName}
         placeholder="File name"
         autoFocus
-        spellCheck='false'
+        spellCheck="false"
         autoComplete="off"
         required
       />

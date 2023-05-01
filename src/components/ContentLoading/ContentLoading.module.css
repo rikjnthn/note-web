@@ -1,0 +1,19 @@
+.loader_container {
+  width: calc(100vw - 15rem);
+  height: 100vh;
+  height: 100dvh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@media screen and (max-width: 800px) {
+  .loader_container {
+    margin-inline: auto;
+  }
+
+  .loader_container img {
+    width: 50px;
+    height: 50px;
+  }
+}

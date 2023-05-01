@@ -1,6 +1,9 @@
-import React, { useState, useReducer, useEffect, useCallback } from "react";
+import React, { useState, useReducer, useEffect } from "react";
 import Link from "next/link";
 import Head from "next/head";
+import type { GetServerSidePropsContext, GetServerSidePropsResult } from "next";
+
+import Pocketbase from "pocketbase";
 
 import { usePocket } from "@/context/PocketProvider";
 
@@ -12,7 +15,6 @@ import type {
 import { SIGNUP_ACTION } from "@/constant/Signup";
 import style from "@/styles/Signup.module.css";
 import SubmitButton from "@/components/SubmitButton";
-import { GetServerSidePropsContext, GetServerSidePropsResult } from "next";
 
 const initialSignupInput: SignUpInputType = {
   username: "",
@@ -83,16 +85,15 @@ export default function SignUp() {
     setLoading(() => true);
     try {
       const { username, confirm_password, email, password } = signupInput;
-      const [registerResult] = await Promise.all([
+      Promise.all([
         await register!(username, email, password, confirm_password),
         await login!(email ?? username, password),
       ]);
-      const date = new Date()
-      const time = date.getTime()
-      const expired = time + 1000*3600*24*30
-      date.setTime(expired)  
-      document.cookie = pb?.authStore.exportToCookie({secure: true, expires: date}) ?? ''
-      window.location.href = `${window.location.origin}/${registerResult.username}`;
+      const date = new Date();
+      date.setDate(date.getDate() + 30);
+      document.cookie =
+        pb?.authStore.exportToCookie({ secure: true, expires: date }) ?? "";
+      window.location.href = `${window.location.origin}/notes`;
     } catch (e: any) {
       const responseErr = e.response.data;
       setErr(() => {
@@ -123,7 +124,6 @@ export default function SignUp() {
     });
   };
 
-  const MemoizedLink = useCallback(() => <Link href="/login">login</Link>, []);
   return (
     <>
       <Head>
@@ -199,7 +199,7 @@ export default function SignUp() {
                 <Link href="/login">login</Link>
                 {/* <MemoizedLink /> */}
               </div>
-              <SubmitButton loading={loading} value="Sign up" />
+              <SubmitButton loading={loading} value="Create" />
             </div>
           </form>
         </div>
@@ -208,19 +208,23 @@ export default function SignUp() {
   );
 }
 
-// export async function getServerSideProps({
-//   req,
-// }: GetServerSidePropsContext): Promise<GetServerSidePropsResult<any>> {
-//   if (req.cookies.pb_auth) {
-//     return {
-//       redirect: {
-//         destination: `/${JSON.parse(req.cookies.pb_auth ?? "").model.username}`,
-//         permanent: false,
-//       },
-//       props: {},
-//     };
-//   }
-//   return {
-//     props: {},
-//   };
-// }
+export async function getServerSideProps({
+  req,
+}: GetServerSidePropsContext): Promise<GetServerSidePropsResult<any>> {
+  const pb = new Pocketbase();
+
+  pb.authStore.loadFromCookie(req.headers.cookie ?? "");
+
+  if (pb.authStore.model) {
+    return {
+      redirect: {
+        destination: `/notes`,
+        permanent: false,
+      },
+      props: {},
+    };
+  }
+  return {
+    props: {},
+  };
+}

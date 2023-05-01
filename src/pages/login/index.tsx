@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Head from "next/head";
-import { GetServerSidePropsContext, GetServerSidePropsResult } from "next";
+import type { GetServerSidePropsContext, GetServerSidePropsResult } from "next";
 
 import isEmail from "validator/lib/isEmail";
+import Pocketbase from "pocketbase";
 
 import { usePocket } from "@/context/PocketProvider";
 
@@ -11,7 +12,7 @@ import style from "@/styles/Login.module.css";
 import SubmitButton from "@/components/SubmitButton";
 
 export default function Login() {
-  const { login, pb } = usePocket();
+  const { login } = usePocket();
   const [error, setError] = useState<boolean>(false);
   const [loginInput, setLoginInput] = useState<{
     email_or_username: string;
@@ -38,18 +39,8 @@ export default function Login() {
     e.preventDefault();
     try {
       setLoading(() => true);
-      const loginData = await login!(
-        loginInput.email_or_username,
-        loginInput.password
-      );
-      const date = new Date();
-      const time = date.getTime();
-      const expired = time + 1000 * 3600 * 24 * 30;
-      date.setTime(expired);
-      document.cookie =
-        pb?.authStore.exportToCookie({ secure: true, expires: date }) ?? "";
-      const username = await loginData.record.username;
-      window.location.href = `${window.location.origin}/${username}`;
+      await login!(loginInput.email_or_username, loginInput.password);
+      window.location.href = `${window.location.origin}/notes`;
     } catch (e) {
       setError(() => true);
     } finally {
@@ -120,19 +111,23 @@ export default function Login() {
   );
 }
 
-// export async function getServerSideProps({
-//   req,
-// }: GetServerSidePropsContext): Promise<GetServerSidePropsResult<any>> {
-//   if (req.cookies.pb_auth) {
-//     return {
-//       redirect: {
-//         destination: `/${JSON.parse(req.cookies.pb_auth ?? "").model.username}`,
-//         permanent: false,
-//       },
-//       props: {},
-//     };
-//   }
-//   return {
-//     props: {},
-//   };
-// }
+export async function getServerSideProps({
+  req,
+}: GetServerSidePropsContext): Promise<GetServerSidePropsResult<any>> {
+  const pb = new Pocketbase();
+
+  pb.authStore.loadFromCookie(req.headers.cookie ?? "");
+
+  if (pb.authStore.model) {
+    return {
+      redirect: {
+        destination: `/notes`,
+        permanent: false,
+      },
+      props: {},
+    };
+  }
+  return {
+    props: {},
+  };
+}

@@ -5,15 +5,10 @@ import { Record, UnsubscribeFunc } from "pocketbase";
 import { usePocket } from "@/context/PocketProvider";
 
 import File from "../File";
+import type { FileListPropsType } from "@/types/FileList";
 
 import style from "./FileList.module.css";
 import FileInput from "../FileInput";
-
-interface FileListPropsType {
-  addFile: boolean;
-  setAddFile: React.Dispatch<React.SetStateAction<boolean>>;
-  folderId: string;
-}
 
 const FileList = ({ addFile, setAddFile, folderId }: FileListPropsType) => {
   const { pb } = usePocket();
@@ -38,9 +33,8 @@ const FileList = ({ addFile, setAddFile, folderId }: FileListPropsType) => {
   const pbSubscribe = async () => {
     unsubscribe = await pb
       ?.collection("notes_file")
-      .subscribe("*", async (e) => {
-        if (e.action === "create") await getFile();
-        if (e.action === "delete") await getFile();
+      .subscribe("*", async () => {
+        await getFile();
       });
   };
 

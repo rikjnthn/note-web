@@ -8,7 +8,7 @@ import { usePocket } from "@/context/PocketProvider";
 import style from "./File.module.css";
 
 const File = ({ fileName, fileId }: { fileName: string; fileId: string }) => {
-  const { pb, user } = usePocket();
+  const { pb } = usePocket();
 
   const router = useRouter();
   const { fileID } = router.query;
@@ -22,12 +22,12 @@ const File = ({ fileName, fileId }: { fileName: string; fileId: string }) => {
 
   const handleDelete = async () => {
     await pb?.collection("notes_file").delete(fileId);
-    router.push(`${window.location.origin}/${user?.username}`);
+    router.push(`${window.location.origin}/notes`);
   };
 
   return (
     <li className={`${style.file} ${open ? style.open : ""}`}>
-      <Link href={`/${user?.username}/${fileId}`}>
+      <Link href={`/notes/${fileId}`}>
         <span title={fileName}>{fileName}</span>
         <div>
           <Image

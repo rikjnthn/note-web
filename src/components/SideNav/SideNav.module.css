@@ -43,5 +43,6 @@
   }
   .nav {
     position: absolute;
+    z-index: 10;
   }
 }
