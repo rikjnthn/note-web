@@ -124,7 +124,6 @@ export async function getServerSideProps({
         destination: `/notes`,
         permanent: false,
       },
-      props: {},
     };
   }
   return {
