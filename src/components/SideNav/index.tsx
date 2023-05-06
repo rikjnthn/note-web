@@ -26,7 +26,7 @@ const SideNav = ({ open }: { open: boolean }) => {
         <FolderList addFolder={addFolder} setAddFolder={setAddFolder} />
       </div>
 
-      <div style={{ marginTop: "auto" }}>
+      <div>
         <AddFolder setAddFolder={setAddFolder} />
       </div>
       {/* 

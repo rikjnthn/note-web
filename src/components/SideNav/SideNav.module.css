@@ -23,6 +23,10 @@
   height: 75%;
 }
 
+.nav > div:nth-child(3) {
+  margin-top: auto;
+}
+
 .setting a {
   display: flex;
   justify-content: space-between;
