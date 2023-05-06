@@ -40,11 +40,11 @@ body {
 
 .hamburger {
   display: none;
-  transition: translate 500ms;
+  transition: transform 500ms;
 }
 
 .hamburger_click {
-  translate: -10rem;
+  transform: translateX(-10rem);
 }
 
 @keyframes spinner {

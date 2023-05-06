@@ -6,7 +6,7 @@
   padding: 2rem 0;
   user-select: none;
   background-color: #fff;
-  transition: translate 500ms;
+  transition: transform 500ms;
 }
 
 .nav > div {
@@ -43,7 +43,7 @@
 
 @media screen and (max-width: 800px) {
   .translateX {
-    translate: -15rem;
+    transform: translateX(-15rem);
   }
   .nav {
     position: absolute;
