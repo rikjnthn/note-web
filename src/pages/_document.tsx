@@ -10,7 +10,9 @@ import Document, {
 export default function MyDocument({ nonce }: { nonce: string }) {
   return (
     <Html lang="en">
-      <Head nonce={nonce} />
+      <Head nonce={nonce}>
+        <link rel="icon" href="/assets/favicon.svg" />
+      </Head>
       <body>
         <Main />
         <NextScript />
