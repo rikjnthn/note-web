@@ -7,7 +7,6 @@ import { usePocket } from "@/context/PocketProvider";
 import File from "../File";
 import type { FileListPropsType } from "@/types/FileList";
 
-import style from "./FileList.module.css";
 import FileInput from "../FileInput";
 
 const FileList = ({ addFile, setAddFile, folderId }: FileListPropsType) => {
@@ -48,7 +47,7 @@ const FileList = ({ addFile, setAddFile, folderId }: FileListPropsType) => {
   }, []);
 
   return (
-    <ul className={style.file_list}>
+    <ul>
       {addFile && <FileInput setAddFile={setAddFile} folderId={folderId} />}
 
       {file?.map((value) => {

@@ -209,7 +209,7 @@ export default function SignUp() {
 }
 
 export async function getServerSideProps({
-  req,
+  req
 }: GetServerSidePropsContext): Promise<GetServerSidePropsResult<any>> {
   const pb = new Pocketbase();
 

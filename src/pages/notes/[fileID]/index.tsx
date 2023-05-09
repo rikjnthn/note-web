@@ -63,7 +63,7 @@ FileContent.getLayout = function getLayout(page: React.ReactElement) {
 };
 
 export async function getServerSideProps({
-  req,
+  req
 }: GetServerSidePropsContext): Promise<GetServerSidePropsResult<any>> {
   const pb = new Pocketbase();
 
