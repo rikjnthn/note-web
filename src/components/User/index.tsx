@@ -12,22 +12,21 @@ const User = () => {
   const [username, setUsername] = useState<string>("");
 
   const { pb, user, logout } = usePocket();
-  const router = useRouter()
+  const router = useRouter();
 
   const handleLogout = () => {
     pb?.authStore.clear();
     logout?.();
     document.cookie = `pb_auth=;expires=Thu, 01 Jan 1970 00:00:01 GMT;Path=/;`;
-    router.push('/')
+    router.push("/");
   };
-  
+
   const handleDelete = async () => {
     pb?.authStore.clear();
-    await pb?.collection('users').delete(user?.id ?? '')
+    await pb?.collection("users").delete(user?.id ?? "");
     document.cookie = `pb_auth=;expires=Thu, 01 Jan 1970 00:00:01 GMT;Path=/;`;
-    router.push('/')
-    
-  }
+    router.push("/");
+  };
 
   useEffect(() => {
     setUsername(() => user?.username);
