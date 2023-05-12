@@ -197,7 +197,6 @@ export default function SignUp() {
               <div>
                 <span>Already have an account? </span>
                 <Link href="/login">login</Link>
-                {/* <MemoizedLink /> */}
               </div>
               <SubmitButton loading={loading} value="Create" />
             </div>

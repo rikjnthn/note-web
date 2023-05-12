@@ -19,11 +19,13 @@ const twoMinutesInMs: number = 120_000; // 2 * 60 * 1000
 const PocketContext = createContext<PocketContextType>({});
 
 const PocketBase = ({
+  apiUrl,
   children,
 }: {
+  apiUrl: string
   children: JSX.Element | JSX.Element[];
 }) => {
-  const pb = new Pocketbase("http://127.0.0.1:8090");
+  const pb = new Pocketbase(apiUrl);
   const date = new Date();
 
   const [token, setToken] = useState<string>(pb.authStore.token);

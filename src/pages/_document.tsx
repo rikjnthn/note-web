@@ -23,7 +23,7 @@ export default function MyDocument({ nonce }: { nonce: string }) {
 
 MyDocument.getInitialProps = async (ctx: DocumentContext) => {
     const nonce = randomBytes(8).toString("base64");
-    const initialProps = await Document.getInitialProps(ctx)
+    const myDocumentProps = await Document.getInitialProps(ctx)
 
     const CSP = `
       default-src 'none' ;
@@ -32,7 +32,7 @@ MyDocument.getInitialProps = async (ctx: DocumentContext) => {
       script-src 'self' ${
         process.env.NODE_ENV === "development" ? "'unsafe-eval'" : ""
       };
-      connect-src 'self' http://127.0.0.1:8090;
+      connect-src 'self' ${process.env.API_URL};
       style-src 'self' ${
         process.env.NODE_ENV === "development"
           ? "'unsafe-inline'"
@@ -50,7 +50,7 @@ MyDocument.getInitialProps = async (ctx: DocumentContext) => {
     }
 
     return {
-      ...initialProps,
+      ...myDocumentProps,
       nonce,
     };
 }
