@@ -22,6 +22,7 @@ const Folder = ({
     JSON.parse(localStorage.getItem(folderId) ?? "false")
   );
   const [addFile, setAddFile] = useState<boolean>(false);
+  const [isDelete, setIsDelete] = useState<boolean>(false);
 
   const handleAddFile = () => {
     setOpen(() => true);
@@ -29,10 +30,16 @@ const Folder = ({
   };
 
   const handleDelete = async () => {
-    await pb?.collection("notes_folder").delete(folderId);
-    localStorage.removeItem(folderId);
-    if (window.location.href !== `${window.location.origin}/notes`)
-      router.push(`${window.location.origin}/notes`);
+    setIsDelete(() => true);
+    try {
+      if (window.location.href !== `${window.location.origin}/notes`)
+        router.push(`${window.location.origin}/notes`);
+      await pb?.collection("notes_folder").delete(folderId);
+      localStorage.removeItem(folderId);
+    } catch {
+      alert("Cannot delete folder")
+      setIsDelete(() => false);
+    }
   };
 
   const handleFolderOpen = () => {
@@ -44,7 +51,7 @@ const Folder = ({
   }, [open]);
 
   return (
-    <li>
+    <li className={isDelete ? "display_none" : ""}>
       <div className={style.folder}>
         <div onClick={handleFolderOpen}>
           <Image
@@ -75,13 +82,12 @@ const Folder = ({
           />
         </div>
       </div>
-      {open && (
-        <FileList
-          addFile={addFile}
-          setAddFile={setAddFile}
-          folderId={folderId}
-        />
-      )}
+      <FileList
+        open={open}
+        addFile={addFile}
+        setAddFile={setAddFile}
+        folderId={folderId}
+      />
     </li>
   );
 };

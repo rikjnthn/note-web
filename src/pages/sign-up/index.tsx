@@ -128,7 +128,6 @@ export default function SignUp() {
     <>
       <Head>
         <title>Sign Up - Note Web</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       <section className={style.sign_up}>
         <div>

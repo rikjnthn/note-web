@@ -1,45 +1,28 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Head from "next/head";
-import { useRouter } from "next/router";
 import type { GetServerSidePropsContext, GetServerSidePropsResult } from "next";
 
 import Pocketbase from "pocketbase";
-
-import { usePocket } from "@/context/PocketProvider";
 
 import Layout from "@/components/Layout";
 import style from "@/styles/App.module.css";
 import { openSans } from "@/fonts";
 import ContentInput from "@/components/ContentInput";
 
-export default function FileContent() {
-  const { pb } = usePocket();
-  const { fileID } = useRouter().query;
-
-  const [isExist, setIsExist] = useState<boolean>(true);
-  const [fileName, setFileName] = useState<string>("");
-
-  useEffect(() => {
-    if (typeof fileID === "string")
-      pb?.collection("notes_file")
-        .getOne(fileID, { $autoCancel: false })
-        .then((res) => {
-          setFileName(() => res.file_name);
-          setIsExist(() => true);
-        })
-        .catch(() => setIsExist(() => false));
-  }, [fileID]);
-
+export default function FileContent({
+  isExist,
+  content,
+  fileName,
+}: FileContentType) {
   if (isExist) {
     return (
       <>
         <Head>
           <title>{fileName}</title>
-          <meta name="viewport" content="width=device-width, initial-scale=1" />
         </Head>
 
         <main className={`${style.file_edit} ${openSans.className}`}>
-          <ContentInput />
+          <ContentInput content={content} />
         </main>
       </>
     );
@@ -62,10 +45,19 @@ FileContent.getLayout = function getLayout(page: React.ReactElement) {
   return <Layout>{page}</Layout>;
 };
 
+interface FileContentType {
+  isExist?: boolean;
+  content?: string;
+  fileName?: string;
+}
+
 export async function getServerSideProps({
-  req
-}: GetServerSidePropsContext): Promise<GetServerSidePropsResult<any>> {
-  const pb = new Pocketbase();
+  req,
+  query,
+}: GetServerSidePropsContext): Promise<
+  GetServerSidePropsResult<FileContentType>
+> {
+  const pb = new Pocketbase(process.env.API_URL);
 
   pb.authStore.loadFromCookie(req.headers.cookie ?? "");
 
@@ -77,6 +69,29 @@ export async function getServerSideProps({
       },
     };
   }
+
+  try {
+    if (typeof query.fileID === "string") {
+      const record = await pb
+        ?.collection("notes_file")
+        .getOne(query.fileID, { $autoCancel: false });
+
+      return {
+        props: {
+          isExist: true,
+          content: record.notes_content,
+          fileName: record.file_name,
+        },
+      };
+    }
+  } catch {
+    return {
+      props: {
+        isExist: false,
+      },
+    };
+  }
+
   return {
     props: {},
   };

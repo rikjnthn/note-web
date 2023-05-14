@@ -53,7 +53,7 @@ const FolderList = ({
 
   return (
     <ul className={style.folder_list}>
-      {addFolder && <FolderInput setAddFolder={setAddFolder} />}
+      {addFolder && <FolderInput folder={folder} setAddFolder={setAddFolder} />}
       {folder?.map((value) => {
         return (
           <Folder

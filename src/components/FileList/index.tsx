@@ -9,7 +9,7 @@ import type { FileListPropsType } from "@/types/FileList";
 
 import FileInput from "../FileInput";
 
-const FileList = ({ addFile, setAddFile, folderId }: FileListPropsType) => {
+const FileList = ({ open, addFile, setAddFile, folderId }: FileListPropsType) => {
   const { pb } = usePocket();
 
   const [file, setFile] = useState<Record[] | undefined>();
@@ -23,7 +23,7 @@ const FileList = ({ addFile, setAddFile, folderId }: FileListPropsType) => {
 
     const items = data?.items;
     setFile(() => {
-      if (typeof items === "object") return [...items];
+      if (Array.isArray(items)) return [...items];
     });
   };
 
@@ -47,8 +47,8 @@ const FileList = ({ addFile, setAddFile, folderId }: FileListPropsType) => {
   }, []);
 
   return (
-    <ul>
-      {addFile && <FileInput setAddFile={setAddFile} folderId={folderId} />}
+    <ul className={`${open ? "" : 'display_none'}`}>
+      {addFile && <FileInput file={file} setAddFile={setAddFile} folderId={folderId} />}
 
       {file?.map((value) => {
         return (

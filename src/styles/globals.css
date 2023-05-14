@@ -47,6 +47,10 @@ body {
   transform: translateX(-10rem);
 }
 
+.display_none {
+  display: none;
+}
+
 @keyframes spinner {
   to {
     transform: rotateZ(360deg);
