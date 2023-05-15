@@ -24,7 +24,8 @@ const File = ({ fileName, fileId }: { fileName: string; fileId: string }) => {
   const handleDelete = async () => {
     setIsDelete(() => true);
     try {
-      router.push(`${window.location.origin}/notes`);
+      if (window.location.href !== `${window.location.origin}/notes`)
+        router.push(`${window.location.origin}/notes`);
       await pb?.collection("notes_file").delete(fileId);
     } catch {
       alert("Cannot delete file");

@@ -7,6 +7,10 @@
   align-items: center;
 }
 
+.loader_full {
+  width: 100%;
+}
+
 @media screen and (max-width: 800px) {
   .loader_container {
     margin-inline: auto;

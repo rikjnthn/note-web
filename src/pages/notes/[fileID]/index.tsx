@@ -8,6 +8,7 @@ import Layout from "@/components/Layout";
 import style from "@/styles/App.module.css";
 import { openSans } from "@/fonts";
 import ContentInput from "@/components/ContentInput";
+import type { FileContentType } from "@/types/File";
 
 export default function FileContent({
   isExist,
@@ -44,12 +45,6 @@ export default function FileContent({
 FileContent.getLayout = function getLayout(page: React.ReactElement) {
   return <Layout>{page}</Layout>;
 };
-
-interface FileContentType {
-  isExist?: boolean;
-  content?: string;
-  fileName?: string;
-}
 
 export async function getServerSideProps({
   req,
