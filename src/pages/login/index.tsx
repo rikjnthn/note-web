@@ -112,7 +112,7 @@ export default function Login() {
 }
 
 export async function getServerSideProps({
-  req,
+  req
 }: GetServerSidePropsContext): Promise<GetServerSidePropsResult<any>> {
   const pb = new Pocketbase();
 
@@ -124,7 +124,6 @@ export async function getServerSideProps({
         destination: `/notes`,
         permanent: false,
       },
-      props: {},
     };
   }
   return {

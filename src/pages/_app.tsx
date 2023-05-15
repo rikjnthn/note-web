@@ -1,4 +1,5 @@
-import type { AppProps } from "next/app";
+import type { AppProps, AppContext } from "next/app";
+import App from "next/app";
 import Router from "next/router";
 import { useState } from "react";
 
@@ -7,11 +8,13 @@ import PocketProvider from "@/context/PocketProvider";
 import ContentLoading from "@/components/ContentLoading";
 import "@/styles/globals.css";
 
-export default function App({
+export default function MyApp({
   Component,
   pageProps,
+  API_URL
 }: AppProps & {
   Component: { getLayout?: (page: React.ReactElement) => JSX.Element };
+  API_URL: string
 }) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const getLayout = Component.getLayout ?? ((page) => page);
@@ -21,7 +24,7 @@ export default function App({
   Router.events.on("routeChangeError", () => setIsLoading(() => false));
 
   return (
-    <PocketProvider>
+    <PocketProvider apiUrl={API_URL}>
       {getLayout(
         isLoading ? (
           <ContentLoading />
@@ -33,4 +36,14 @@ export default function App({
       )}
     </PocketProvider>
   );
+}
+
+MyApp.getInitialProps = async (ctx: AppContext) => {
+  const appProps = await App.getInitialProps(ctx)
+  const API_URL = process.env.API_URL
+
+  return {
+    ...appProps,
+    API_URL
+  }
 }

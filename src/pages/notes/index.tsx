@@ -1,10 +1,10 @@
 import React from "react";
+import Head from "next/head";
 import type { GetServerSidePropsContext, GetServerSidePropsResult } from "next";
 
 import Pocketbase from "pocketbase";
 
 import Layout from "@/components/Layout";
-import Head from "next/head";
 
 export default function Notes() {
   return (
@@ -21,7 +21,7 @@ Notes.getLayout = function getLayout(page: React.ReactElement) {
 };
 
 export async function getServerSideProps({
-  req,
+  req
 }: GetServerSidePropsContext): Promise<GetServerSidePropsResult<any>> {
   const pb = new Pocketbase();
 

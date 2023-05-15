@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/router";
 
 import { usePocket } from "@/context/PocketProvider";
@@ -6,11 +6,11 @@ import { usePocket } from "@/context/PocketProvider";
 import style from "./ContentInput.module.css";
 import { openSans } from "@/fonts";
 
-const ContentInput = () => {
+const ContentInput = ({ content }: { content?: string }) => {
   const { pb } = usePocket();
   const { fileID } = useRouter().query;
 
-  const [inputContent, setInputContent] = useState<string>("");
+  const [inputContent, setInputContent] = useState<string>(content ?? "");
 
   const handleInput = (e: React.FormEvent<HTMLTextAreaElement>) => {
     const inp = e.currentTarget.value;
@@ -28,23 +28,6 @@ const ContentInput = () => {
       }
     }
   };
-
-  const getContent = async () => {
-    try {
-      if (typeof fileID === "string") {
-        const record = await pb
-          ?.collection("notes_file")
-          .getOne(fileID, { $autoCancel: false });
-        setInputContent(() => record?.notes_content);
-      }
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
-  useEffect(() => {
-    getContent();
-  }, [fileID]);
 
   return (
     <form className={style.content_input}>

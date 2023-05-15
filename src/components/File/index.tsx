@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { MouseEventHandler, useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -14,6 +14,7 @@ const File = ({ fileName, fileId }: { fileName: string; fileId: string }) => {
   const { fileID } = router.query;
 
   const [open, setOpen] = useState<boolean>(false);
+  const [isDelete, setIsDelete] = useState<boolean>(false);
 
   useEffect(() => {
     if (fileId == fileID) setOpen(() => true);
@@ -21,25 +22,34 @@ const File = ({ fileName, fileId }: { fileName: string; fileId: string }) => {
   }, [fileId, fileID]);
 
   const handleDelete = async () => {
-    await pb?.collection("notes_file").delete(fileId);
-    router.push(`${window.location.origin}/notes`);
+    setIsDelete(() => true);
+    try {
+      if (window.location.href !== `${window.location.origin}/notes`)
+        router.push(`${window.location.origin}/notes`);
+      await pb?.collection("notes_file").delete(fileId);
+    } catch {
+      alert("Cannot delete file");
+      setIsDelete(() => false);
+    }
   };
 
   return (
-    <li className={`${style.file} ${open ? style.open : ""}`}>
+    <li
+      className={`${style.file} ${open ? style.open : ""} ${
+        isDelete ? style.display_none : ""
+      }`}
+    >
       <Link href={`/notes/${fileId}`}>
         <span title={fileName}>{fileName}</span>
-        <div>
-          <Image
-            onClick={handleDelete}
-            src="/assets/delete.svg"
-            alt="delete file"
-            title="delete file"
-            width={13}
-            height={13}
-          />
-        </div>
       </Link>
+      <Image
+        onClick={handleDelete}
+        src="/assets/delete.svg"
+        alt="delete file"
+        title="delete file"
+        width={13}
+        height={13}
+      />
     </li>
   );
 };

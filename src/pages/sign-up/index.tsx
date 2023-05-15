@@ -128,7 +128,6 @@ export default function SignUp() {
     <>
       <Head>
         <title>Sign Up - Note Web</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       <section className={style.sign_up}>
         <div>
@@ -197,7 +196,6 @@ export default function SignUp() {
               <div>
                 <span>Already have an account? </span>
                 <Link href="/login">login</Link>
-                {/* <MemoizedLink /> */}
               </div>
               <SubmitButton loading={loading} value="Create" />
             </div>
@@ -209,7 +207,7 @@ export default function SignUp() {
 }
 
 export async function getServerSideProps({
-  req,
+  req
 }: GetServerSidePropsContext): Promise<GetServerSidePropsResult<any>> {
   const pb = new Pocketbase();
 
@@ -221,7 +219,6 @@ export async function getServerSideProps({
         destination: `/notes`,
         permanent: false,
       },
-      props: {},
     };
   }
   return {

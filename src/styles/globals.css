@@ -40,11 +40,15 @@ body {
 
 .hamburger {
   display: none;
-  transition: translate 500ms;
+  transition: transform 500ms;
 }
 
 .hamburger_click {
-  translate: -10rem;
+  transform: translateX(-10rem);
+}
+
+.display_none {
+  display: none;
 }
 
 @keyframes spinner {
@@ -59,7 +63,7 @@ body {
     position: fixed;
     top: 1.75rem;
     left: 12rem;
-    z-index: 10;
+    z-index: 20;
     height: 30px;
     border: none;
     background-color: transparent;
