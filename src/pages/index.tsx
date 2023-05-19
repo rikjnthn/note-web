@@ -1,6 +1,8 @@
 import Head from "next/head";
 import React from "react";
 
+import Pocketbase from "pocketbase"
+
 import { openSans } from "@/fonts";
 import { GetServerSidePropsContext, GetServerSidePropsResult } from "next";
 
@@ -25,8 +27,11 @@ export default function Home() {
 export async function getServerSideProps({
   req,
 }: GetServerSidePropsContext): Promise<GetServerSidePropsResult<any>> {
+  const pb = new Pocketbase();
 
-  if (req.cookies.pb_auth) {
+  pb.authStore.loadFromCookie(req.headers.cookie ?? "");
+
+  if (pb.authStore.isValid) {
     return {
       redirect: {
         permanent: false,

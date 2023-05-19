@@ -118,7 +118,7 @@ export async function getServerSideProps({
 
   pb.authStore.loadFromCookie(req.headers.cookie ?? "");
 
-  if (pb.authStore.model) {
+  if (pb.authStore.isValid) {
     return {
       redirect: {
         destination: `/notes`,
