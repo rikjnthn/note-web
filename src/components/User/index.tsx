@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
-import Link from "next/link";
 import { useRouter } from "next/router";
 
 import { usePocket } from "@/context/PocketProvider";
@@ -49,15 +48,6 @@ const User = () => {
             />
           </button>
           <div className={style.option}>
-            {/* <Link href="/setting" target="_blank">
-              <Image
-                src="/assets/setting.svg"
-                alt="setting"
-                width={15}
-                height={15}
-              />
-              <span>Setting</span>
-            </Link> */}
             <button onClick={handleLogout} type="button">
               <Image
                 src="/assets/logout.svg"

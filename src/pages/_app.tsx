@@ -37,7 +37,7 @@ export default function MyApp({
       router.events.off("routeChangeStart", handleRouteChangeComplete);
     };
   }, [router]);
-  
+
   useEffect(() => {
     const handleRouteChangeError = () => setIsLoading(() => false);
     router.events.on("routeChangeError", handleRouteChangeError);

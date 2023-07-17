@@ -55,6 +55,7 @@ const FileList = ({ open, addFile, setAddFile, folderId }: FileListPropsType) =>
           <File key={value.id} fileName={value.file_name} fileId={value.id} />
         );
       })}
+      {/* {children} */}
     </ul>
   );
 };

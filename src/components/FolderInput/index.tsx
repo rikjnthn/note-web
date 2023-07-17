@@ -72,7 +72,6 @@ const FolderInput = ({
         required
       />
       {error && <span>Foldername already exist</span>}
-      <dialog open>tes</dialog>
     </form>
   );
 };

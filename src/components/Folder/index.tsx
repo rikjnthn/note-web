@@ -48,7 +48,7 @@ const Folder = ({
 
   useEffect(() => {
     localStorage.setItem(folderId, JSON.stringify(open));
-  }, [open]);
+  }, [open, folderId]);
 
   return (
     <li className={isDelete ? "display_none" : ""}>

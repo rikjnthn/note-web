@@ -4,17 +4,17 @@ import React, {
   useContext,
   useEffect,
   useState,
+  useMemo,
 } from "react";
 
 import Pocketbase, { Record, Admin } from "pocketbase";
 import jwtDecode from "jwt-decode";
 
 import useInterval from "@/hooks/useInterval";
-import type { PocketContextType, TokenType } from "@/types/PocketProvider"; 
+import type { PocketContextType, TokenType } from "@/types/PocketProvider";
 
 const fiveMinutesInMs: number = 300_000; // 5 * 60 * 1000
 const twoMinutesInMs: number = 120_000; // 2 * 60 * 1000
-
 
 const PocketContext = createContext<PocketContextType>({});
 
@@ -22,11 +22,11 @@ const PocketBase = ({
   apiUrl,
   children,
 }: {
-  apiUrl: string
+  apiUrl: string;
   children: JSX.Element | JSX.Element[];
 }) => {
-  const pb = new Pocketbase(apiUrl);
-  const date = new Date();
+  const pb = useMemo(() => new Pocketbase(apiUrl), [apiUrl]);
+  const date = useMemo(() => new Date(), []);
 
   const [token, setToken] = useState<string>(pb.authStore.token);
   const [user, setUser] = useState<Record | Admin | null>(pb.authStore.model);
@@ -45,7 +45,7 @@ const PocketBase = ({
         });
       }
     });
-  }, [pb.authStore]);
+  }, [pb.authStore, date]);
 
   useEffect(() => {
     if (pb.authStore.model) {
@@ -55,7 +55,7 @@ const PocketBase = ({
         expires: date,
       });
     }
-  }, []);
+  }, [pb.authStore, date]);
 
   const register = async (
     username: string,
@@ -78,8 +78,6 @@ const PocketBase = ({
     pb.authStore.clear();
   };
 
-
-
   const refreshSession = useCallback(async () => {
     if (!pb.authStore.isValid) return;
     const decode: TokenType = jwtDecode(token);
@@ -87,7 +85,7 @@ const PocketBase = ({
     const expirationWithBuffer = (decode?.exp + fiveMinutesInMs) / 1000;
     if (tokenExpiration < expirationWithBuffer)
       await pb.collection("users").authRefresh();
-  }, [token]);
+  }, [token, pb]);
 
   useInterval(refreshSession, token ? twoMinutesInMs : null);
   return (
