@@ -21,7 +21,6 @@ const User = () => {
   };
 
   const handleDelete = async () => {
-    pb?.authStore.clear();
     await pb?.collection("users").delete(user?.id ?? "");
     document.cookie = `pb_auth=;expires=Thu, 01 Jan 1970 00:00:01 GMT;Path=/;`;
     router.push("/");
