@@ -30,7 +30,7 @@ MyDocument.getInitialProps = async (ctx: DocumentContext) => {
       script-src-elem 'self';
       script-src-attr 'self';
       script-src 'self' ${
-        process.env.NODE_ENV === "development" ? "'unsafe-eval'" : ""
+        process.env.NODE_ENV === "development" ? "'unsafe-eval'" : `'nonce-${nonce}'`
       };
       connect-src 'self' ${process.env.API_URL};
       style-src 'self' ${
